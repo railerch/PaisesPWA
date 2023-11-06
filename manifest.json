@@ -1,0 +1,19 @@
+{
+    "name": "Responsive Layout | demo PWA",
+    "short_name": "DemoPWA",
+    "description": "Simple aplicacion demo para pruebas de PWA",
+    "start_url": "/",
+    "display": "standalone",
+    "lang": "es (Spanish)",
+    "dir": "ltr",
+    "background_color": "#fdfdfd",
+    "theme_color": "#1ebddd",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "./public/img/icon.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}

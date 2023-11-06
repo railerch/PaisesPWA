@@ -1,0 +1,118 @@
+body {
+    margin: 2em 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    width: 100%;
+}
+
+.text-muted {
+    color: gray;
+}
+
+#my-container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+#contenido {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+#login-frm {
+    width: 15%;
+    min-width: 200px;
+    padding: 10px;
+    margin: 20vh auto;
+    box-sizing: border-box;
+    border: 1px solid gray;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #00000050;
+    text-align: center;
+}
+
+#login-frm * {
+    margin-bottom: 10px;
+}
+
+#login-frm .icon-user {
+    font-size: 5em;
+    color: darkcyan;
+}
+
+input {
+    width: 90%;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.my-buttons {
+    padding: 10px;
+    border: 0;
+    background-color: darkcyan;
+    color: #fff;
+}
+
+.my-buttons.md {
+    padding: 15px;
+    width: 100px;
+}
+
+.my-buttons.lg {
+    padding: 20px;
+    width: 150px;
+}
+
+.my-buttons:hover {
+    background-color: lightblue;
+    color: gray;
+    box-shadow: 2px 2px 3px gray;
+    cursor: pointer;
+}
+
+.my-buttons:active {
+    background-color: lightblue;
+    color: black;
+    box-shadow: 1px 1px 2px lightgray;
+}
+
+.aviso-error {
+    padding: 5px;
+    background-color: crimson;
+    color: #fff;
+    border-radius: 5px;
+    border: 1px solid red;
+}
+
+.aviso-ok {
+    padding: 5px;
+    background-color: green;
+    color: #fff;
+    border-radius: 5px;
+    border: 1px solid lightgreen;
+}
+
+#respuesta-div {
+    width: 100%;
+    height: 250px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+}
+
+@media (max-width: 720px) {
+    #login-frm {
+        width: 90%;
+    }
+
+    .lorem-ipsum {
+        width: 100% !important;
+    }
+}
