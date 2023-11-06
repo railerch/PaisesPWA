@@ -110,7 +110,7 @@ window.onload = () => {
         document.cookie = "";
         document.getElementById("login-frm").addEventListener("submit", function (evt) {
             evt.preventDefault();
-            let usuario = this.querySelector("input[name=usuario]").value;
+            let usuario = this.querySelector("input[name=usuario]").value.toLowerCase();
             let clave = this.querySelector("input[name=clave]").value;
 
             if (usuario == "root" && clave == 1234) {
