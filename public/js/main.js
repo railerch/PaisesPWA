@@ -44,7 +44,9 @@ window.onload = () => {
                 divImg.style.display = "flex";
 
                 let img = document.createElement("img");
-                img.setAttribute("src", `img/img${i + 1}.png`);
+                let imgNum = 0;
+                do { imgNum = parseInt(Math.random() * 40) } while (imgNum == 0);
+                img.setAttribute("src", `public/img/img${imgNum}.png`);
                 img.style.width = "20%";
                 img.style.marginRight = "1em";
 
@@ -67,19 +69,26 @@ window.onload = () => {
             // Probar solicitudes y validacion de sesion mediante cookies
             document.getElementById("probar-btn").addEventListener("click", function () {
                 const serverResDiv = document.getElementById("respuesta-div");
-                fetch("/probar-cookies")
-                    .then(res => res.text())
-                    .then(res => {
-                        if (res == "Unauthorized") {
-                            // Cerrar la sesion en caso de no estar autorizado (si cambian las creds en las cookies)
-                            window.location.replace("/");
-                        } else {
-                            // Mostrar respuesta del servidor si la sesion es valida
-                            serverResDiv.innerText = res;
-                        }
-                    }).catch(err => {
-                        alert("Error en servidor: " + err);
-                    })
+                let cookies = document.cookie.split(";");
+                let creds = null;
+                cookies.forEach(ck => {
+                    if (ck.includes("credenciales")) {
+                        creds = ck.split("=")[1].split("|");
+                    }
+                })
+
+                console.log(creds);
+
+                if (creds[0] == "root" && creds[1] == 1234) {
+                    // Mostrar respuesta del servidor si la sesion es valida
+                    serverResDiv.innerHTML = "<h3 style='color:green'>> Autorizado</h3>";
+                } else {
+                    // Cerrar la sesion en caso de no estar autorizado (si cambian las creds en las cookies)
+                    serverResDiv.innerHTML = "<h3 style='color:red'>> NO autorizado <br><small>Redirigiendo...</small></h3>";
+                    setTimeout(() => {
+                        window.location.replace("index.html");
+                    }, 3000)
+                }
             })
 
             //Limpiar contenedor de respuesta
@@ -90,7 +99,7 @@ window.onload = () => {
             // Salir de la aplicacion
             document.getElementById("salir-btn").addEventListener("click", function () {
                 console.log("Cerrar sesion...")
-                window.location.replace("/");
+                window.location.replace("index.html");
             })
         } else {
             window.location.replace("/")
@@ -98,27 +107,32 @@ window.onload = () => {
     } else {
         // LOGIN
         sessionStorage.removeItem("sesion");
+        document.cookie = "";
         document.getElementById("login-frm").addEventListener("submit", function (evt) {
             evt.preventDefault();
             let usuario = this.querySelector("input[name=usuario]").value;
             let clave = this.querySelector("input[name=clave]").value;
-            let clav
 
-            /*
-            if (res.code == 200) {
-                        sessionStorage.setItem("sesion", true);
+            if (usuario == "root" && clave == 1234) {
+                // Agregar cookies con fecha de expiracion para 5 dias
+                let fecVen = new Date();
+                fecVen.setTime(fecVen.getTime() + (5 * 24 * 60 * 60 * 1000));
 
-                        fn.aviso_usuario("Redirigiendo...", "aviso-ok");
+                document.cookie = `credenciales=${usuario}|${clave};expires=${fecVen.toGMTString()}`;
+                document.cookie = `dominio=localhost;expires=${fecVen.toGMTString()}`;
 
-                        setTimeout(() => {
-                            window.location.replace("/responsive-layout");
-                        }, 2500);
-                    } else {
-                        fn.aviso_usuario("Datos invalidos", "aviso-error");
-                    }
-            */
+                sessionStorage.setItem("sesion", true);
 
+                fn.aviso_usuario("Redirigiendo...", "aviso-ok");
+
+                setTimeout(() => {
+                    window.location.replace("responsive-layout.html");
+                }, 2500);
+            } else {
+                fn.aviso_usuario("Datos invalidos", "aviso-error");
+            }
         })
-    }
 
+
+    }
 }

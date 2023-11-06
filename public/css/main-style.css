@@ -101,6 +101,7 @@ input {
 #respuesta-div {
     width: 100%;
     height: 250px;
+    padding: 15px;
     border: 1px solid gray;
     border-radius: 5px;
     background-color: #000;
