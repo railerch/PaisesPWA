@@ -45,6 +45,12 @@ main {
     color: darkcyan;
 }
 
+#install-lnk {
+    text-decoration: none;
+    color: darkcyan;
+    cursor: pointer;
+}
+
 input {
     width: 90%;
     padding: 5px;
