@@ -151,6 +151,10 @@ window.onload = () => {
                                     li.style.wordWrap = "break-word";
                                     ul.appendChild(li);
                                     break;
+                                case "Mapa":
+                                    li.innerHTML = `${dat}: <a href='${pais.maps.googleMaps}' target='_blank'><i class="icon-eye"></i>Ver mapa<a/>`;
+                                    ul.appendChild(li);
+                                    break;
                             }
                         })
                         div.appendChild(ul);
