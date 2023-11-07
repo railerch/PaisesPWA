@@ -36,6 +36,7 @@ window.onload = () => {
         }
     })
 
+    // INTERFACE
     if (window.location.pathname.includes("responsive-layout")) {
         if (sessionStorage.getItem("sesion")) {
             console.log("Section: Responsive Layout");
@@ -64,71 +65,96 @@ window.onload = () => {
 
             // Generar contenido
             let contenido = document.getElementById("contenido");
-            for (let i = 0; i < 6; i++) {
-                let div = document.createElement("div");
-                div.classList.add("lorem-ipsum")
-                div.style.width = `${col * 3}px`;
-                div.style.margin = "5px";
-                div.style.padding = "5px";
-                div.style.border = "1px solid gray";
-                div.style.borderRadius = "5px";
-                div.style.boxShadow = "1px 1px 3px gray";
+            fetch("https://restcountries.com/v3.1/all")
+                .then(res => res.json())
+                .then(res => {
+                    contenido.innerHTML = "";
+                    console.log(res[0]);
 
-                let divImg = document.createElement("div");
-                divImg.style.display = "flex";
+                    res.forEach(pais => {
+                        // TARJETA
+                        let div = document.createElement("div");
+                        div.classList.add("tarjetas")
+                        div.style.width = `${col * 3}px`;
+                        div.style.margin = "5px";
+                        div.style.padding = "5px";
+                        div.style.border = "1px solid gray";
+                        div.style.borderRadius = "5px";
+                        div.style.boxShadow = "1px 1px 3px gray";
+                        div.style.backgroundColor = "beige";
 
-                let img = document.createElement("img");
-                let imgNum = 0;
-                do { imgNum = parseInt(Math.random() * 40) } while (imgNum == 0);
-                img.setAttribute("src", `public/img/img${imgNum}.png`);
-                img.style.width = "20%";
-                img.style.marginRight = "1em";
+                        let divImg = document.createElement("div");
+                        divImg.style.display = "flex";
+                        contenido.appendChild(div);
 
-                let h = document.createElement("h3");
-                h.textContent = "Lorem ipsum";
+                        // IMAGEN
+                        let img = document.createElement("img");
+                        let imgNum = 0;
+                        do { imgNum = parseInt(Math.random() * 40) } while (imgNum == 0);
+                        img.setAttribute("src", pais.flags.png);
+                        img.style.width = "25%";
+                        img.style.marginRight = "1em";
+                        div.appendChild(divImg);
 
-                divImg.appendChild(img);
-                divImg.appendChild(h);
+                        // ENCABEZADO
+                        let divEnc = document.createElement("div")
+                        let h = document.createElement("h3");
+                        h.style.marginBottom = "5px"
+                        h.textContent = pais.translations.spa.official;
+                        let continente = document.createElement("small");
+                        continente.innerText = pais.continents[0]
+                        divEnc.appendChild(h);
+                        divEnc.appendChild(continente);
 
-                let hr = document.createElement("hr");
-                let p = document.createElement("p");
-                p.textContent = "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto final.";
+                        divImg.appendChild(img);
+                        divImg.appendChild(divEnc);
 
-                div.appendChild(divImg);
-                div.appendChild(hr);
-                div.appendChild(p);
-                contenido.appendChild(div);
-            }
+                        let hr = document.createElement("hr");
+                        div.appendChild(hr);
 
-            // Probar solicitudes y validacion de sesion mediante cookies
-            document.getElementById("probar-btn").addEventListener("click", function () {
-                const serverResDiv = document.getElementById("respuesta-div");
-                let cookies = document.cookie.split(";");
-                let creds = null;
-                cookies.forEach(ck => {
-                    if (ck.includes("credenciales")) {
-                        creds = ck.split("=")[1].split("|");
-                    }
-                })
-
-                console.log(creds);
-
-                if (creds[0] == "root" && creds[1] == 1234) {
-                    // Mostrar respuesta del servidor si la sesion es valida
-                    serverResDiv.innerHTML = "<h3 style='color:green'>> Autorizado</h3>";
-                } else {
-                    // Cerrar la sesion en caso de no estar autorizado (si cambian las creds en las cookies)
-                    serverResDiv.innerHTML = "<h3 style='color:red'>> NO autorizado <br><small>Redirigiendo...</small></h3>";
-                    setTimeout(() => {
-                        window.location.replace("index.html");
-                    }, 3000)
-                }
-            })
-
-            //Limpiar contenedor de respuesta
-            document.getElementById("reiniciar-btn").addEventListener("click", function () {
-                document.getElementById("respuesta-div").innerText = "";
-            })
+                        // LISTA
+                        let lista = ["Capital", "Moneda", "Idioma", "Población", "Zona horaria", "Mapa"];
+                        let ul = document.createElement("ul");
+                        lista.forEach(dat => {
+                            let li = document.createElement("li");
+                            switch (dat) {
+                                case "Capital":
+                                    li.innerText = `${dat}: ${pais.capital}`;
+                                    ul.appendChild(li);
+                                    break;
+                                case "Población":
+                                    li.innerText = `${dat}: ${parseInt(pais.population)}`;
+                                    ul.appendChild(li);
+                                    break;
+                                case "Idioma":
+                                    let lang = [];
+                                    for (let l in pais.languages) {
+                                        lang.push(pais.languages[l]);
+                                    }
+                                    li.innerText = `${dat}: ${lang.toString()}`;
+                                    ul.appendChild(li);
+                                    break;
+                                case "Moneda":
+                                    let coin = [];
+                                    for (let cur in pais.currencies) {
+                                        coin.push(pais.currencies[cur].name);
+                                    }
+                                    li.innerText = `${dat}: ${coin.toString()}`;
+                                    ul.appendChild(li);
+                                    break;
+                                case "Zona horaria":
+                                    li.innerText = `${dat}: ${pais.timezones}`;
+                                    ul.appendChild(li);
+                                    break;
+                                case "Mapa":
+                                    li.innerHTML = `${dat}: <a href='${pais.maps.googleMaps}' target='_blank'><i class="icon-eye"></i>Ver mapa<a/>`;
+                                    ul.appendChild(li);
+                                    break;
+                            }
+                        })
+                        div.appendChild(ul);
+                    })
+                }).catch(err => alert("Error en API fetch\n" + err))
 
             // Salir de la aplicacion
             document.getElementById("salir-btn").addEventListener("click", function () {
