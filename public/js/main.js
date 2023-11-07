@@ -120,10 +120,12 @@ window.onload = () => {
                             switch (dat) {
                                 case "Capital":
                                     li.innerText = `${dat}: ${pais.capital}`;
+                                    li.style.wordWrap = "break-word";
                                     ul.appendChild(li);
                                     break;
                                 case "Población":
                                     li.innerText = `${dat}: ${parseInt(pais.population)}`;
+                                    li.style.wordWrap = "break-word";
                                     ul.appendChild(li);
                                     break;
                                 case "Idioma":
@@ -132,6 +134,7 @@ window.onload = () => {
                                         lang.push(pais.languages[l]);
                                     }
                                     li.innerText = `${dat}: ${lang.toString()}`;
+                                    li.style.wordWrap = "break-word";
                                     ul.appendChild(li);
                                     break;
                                 case "Moneda":
@@ -140,14 +143,12 @@ window.onload = () => {
                                         coin.push(pais.currencies[cur].name);
                                     }
                                     li.innerText = `${dat}: ${coin.toString()}`;
+                                    li.style.wordWrap = "break-word";
                                     ul.appendChild(li);
                                     break;
                                 case "Zona horaria":
                                     li.innerText = `${dat}: ${pais.timezones}`;
-                                    ul.appendChild(li);
-                                    break;
-                                case "Mapa":
-                                    li.innerHTML = `${dat}: <a href='${pais.maps.googleMaps}' target='_blank'><i class="icon-eye"></i>Ver mapa<a/>`;
+                                    li.style.wordWrap = "break-word";
                                     ul.appendChild(li);
                                     break;
                             }
