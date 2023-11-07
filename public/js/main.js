@@ -6,7 +6,7 @@ window.onload = () => {
     // BOTON DE INSTALACION PARA LA PWA
 
     // Variable global que tendra la captura del evento 'beforeinstallprompt'
-    let deferredPromt;
+    let deferredPrompt;
 
     /* Boton de instalacion, con un 'display=none' para solo mostrarlo cuando
     el evento 'beforeinstallpromt' sea activado, esto limitara la visualizacion
@@ -16,22 +16,22 @@ window.onload = () => {
     // Captura del evento ya mencionado
     window.addEventListener("beforeinstallprompt", function (evt) {
         evt.preventDefault();
-        deferredPromt = evt;
+        deferredPrompt = evt;
         installLnk.style.display = "inline";
     })
 
     // Configuracion del boton que activara el evento cuando sea requerido por el usuario
     installLnk.addEventListener("click", async function () {
         // Validar que el evento haya sido capturado
-        if (deferredPromt !== null) {
+        if (deferredPrompt !== null) {
             // Mostrar la ventana emergente de instalacion
-            deferredPromt.prompt();
+            deferredPrompt.prompt();
             // Esperar por la eleccion del usuario
-            const { outcome } = await deferredPromt.userChoice;
+            const { outcome } = await deferredPrompt.userChoice;
 
             // Si escoge instalar outcome es 'accepted' de lo contrario sera 'dismiss'
             if (outcome === "accepted") {
-                deferredPromt = null;
+                deferredPrompt = null;
             }
         }
     })
