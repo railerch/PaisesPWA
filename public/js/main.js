@@ -2,6 +2,40 @@ import * as fn from "./main-fn.js";
 
 window.onload = () => {
     console.log("JS active...");
+
+    // BOTON DE INSTALACION PARA LA PWA
+
+    // Variable global que tendra la captura del evento 'beforeinstallprompt'
+    let deferredPromt;
+
+    /* Boton de instalacion, con un 'display=none' para solo mostrarlo cuando
+    el evento 'beforeinstallpromt' sea activado, esto limitara la visualizacion
+    del boton solo en aquellos navegadores compatibles con la instalacion de PWA */
+    let installLnk = document.getElementById("install-lnk");
+
+    // Captura del evento ya mencionado
+    window.addEventListener("beforeinstallprompt", function (evt) {
+        evt.preventDefault();
+        deferredPromt = evt;
+        installLnk.style.display = "inline";
+    })
+
+    // Configuracion del boton que activara el evento cuando sea requerido por el usuario
+    installLnk.addEventListener("click", async function () {
+        // Validar que el evento haya sido capturado
+        if (deferredPromt !== null) {
+            // Mostrar la ventana emergente de instalacion
+            deferredPromt.prompt();
+            // Esperar por la eleccion del usuario
+            const { outcome } = await deferredPromt.userChoice;
+
+            // Si escoge instalar outcome es 'accepted' de lo contrario sera 'dismiss'
+            if (outcome === "accepted") {
+                deferredPromt = null;
+            }
+        }
+    })
+
     if (window.location.pathname.includes("responsive-layout")) {
         if (sessionStorage.getItem("sesion")) {
             console.log("Section: Responsive Layout");
