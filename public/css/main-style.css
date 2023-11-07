@@ -134,7 +134,12 @@ input {
         width: 90%;
     }
 
+    #contenido {
+        justify-content: center;
+    }
+
     .tarjetas {
         width: 90% !important;
     }
+
 }
