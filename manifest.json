@@ -1,6 +1,6 @@
 {
-    "name": "Responsive Layout | demo PWA",
-    "short_name": "DemoPWA",
+    "name": "Responsive PWA | demo App",
+    "short_name": "MyDemoPWA",
     "description": "Simple aplicacion demo para pruebas de PWA",
     "start_url": "/",
     "display": "standalone",
