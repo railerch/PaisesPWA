@@ -69,7 +69,7 @@ footer {
 
 /* LOGIN */
 #login-frm {
-    width: 15%;
+    width: 300px;
     min-width: 200px;
     padding: 10px;
     margin: 15vh auto;
