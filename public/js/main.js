@@ -69,63 +69,66 @@ window.onload = () => {
                 .then(res => res.json())
                 .then(res => {
                     contenido.innerHTML = "";
-                    console.log(res[0]);
-
                     res.forEach(pais => {
                         // TARJETA
                         let div = document.createElement("div");
+                        let str = pais.translations.spa.official.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replaceAll(" ", "-")
+                        div.setAttribute("id", str)
                         div.classList.add("tarjetas")
                         div.style.width = `${col * 3}px`;
                         div.style.margin = "5px";
-                        div.style.padding = "5px";
+                        div.style.boxSizing = "border-box";
+                        div.style.padding = "10px";
                         div.style.border = "1px solid gray";
                         div.style.borderRadius = "5px";
                         div.style.boxShadow = "1px 1px 3px gray";
                         div.style.backgroundColor = "beige";
-
-                        let divImg = document.createElement("div");
-                        divImg.style.display = "flex";
+                        div.style.color = "#333";
                         contenido.appendChild(div);
 
-                        // IMAGEN
+                        // ENCABEZADO
+                        // ======> Imagen
+                        let divImg = document.createElement("div");
                         let img = document.createElement("img");
                         let imgNum = 0;
                         do { imgNum = parseInt(Math.random() * 40) } while (imgNum == 0);
                         img.setAttribute("src", pais.flags.png);
-                        img.style.width = "25%";
-                        img.style.marginRight = "1em";
+                        img.style.width = "100%";
+                        divImg.appendChild(img);
                         div.appendChild(divImg);
 
-                        // ENCABEZADO
+                        // ======> Nombre pais
                         let divEnc = document.createElement("div")
                         let h = document.createElement("h3");
                         h.style.marginBottom = "5px"
                         h.textContent = pais.translations.spa.official;
                         let continente = document.createElement("small");
                         continente.innerText = pais.continents[0]
+
                         divEnc.appendChild(h);
                         divEnc.appendChild(continente);
-
-                        divImg.appendChild(img);
                         divImg.appendChild(divEnc);
 
+                        // ======> Separador
                         let hr = document.createElement("hr");
                         div.appendChild(hr);
 
-                        // LISTA
+                        // DETALLES DEL PAIS
                         let lista = ["Capital", "Moneda", "Idioma", "Población", "Zona horaria", "Mapa"];
                         let ul = document.createElement("ul");
                         lista.forEach(dat => {
                             let li = document.createElement("li");
                             switch (dat) {
                                 case "Capital":
-                                    li.innerText = `${dat}: ${pais.capital}`;
                                     li.style.wordWrap = "break-word";
+                                    li.innerHTML = `<b>${dat}</b>: ${pais.capital}`;
                                     ul.appendChild(li);
                                     break;
                                 case "Población":
-                                    li.innerText = `${dat}: ${parseInt(pais.population)}`;
+                                    // Cantidad con separador de miles
+                                    let poblacion = parseInt(pais.population).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                                     li.style.wordWrap = "break-word";
+                                    li.innerHTML = `<b>${dat}</b>: ${poblacion}`;
                                     ul.appendChild(li);
                                     break;
                                 case "Idioma":
@@ -133,8 +136,8 @@ window.onload = () => {
                                     for (let l in pais.languages) {
                                         lang.push(pais.languages[l]);
                                     }
-                                    li.innerText = `${dat}: ${lang.toString()}`;
                                     li.style.wordWrap = "break-word";
+                                    li.innerHTML = `<b>${dat}</b>: ${lang.toString()}`;
                                     ul.appendChild(li);
                                     break;
                                 case "Moneda":
@@ -142,13 +145,13 @@ window.onload = () => {
                                     for (let cur in pais.currencies) {
                                         coin.push(pais.currencies[cur].name);
                                     }
-                                    li.innerText = `${dat}: ${coin.toString()}`;
                                     li.style.wordWrap = "break-word";
+                                    li.innerHTML = `<b>${dat}</b>: ${coin.toString()}`;
                                     ul.appendChild(li);
                                     break;
                                 case "Zona horaria":
-                                    li.innerText = `${dat}: ${pais.timezones}`;
                                     li.style.wordWrap = "break-word";
+                                    li.innerHTML = `<b>${dat}</b>: ${pais.timezones}`;
                                     ul.appendChild(li);
                                     break;
                                 case "Mapa":
@@ -159,6 +162,28 @@ window.onload = () => {
                         })
                         div.appendChild(ul);
                     })
+
+                    // FILTRO DE BUSQUEDA
+                    document.getElementById("filtro-pais").addEventListener("keyup", function () {
+                        let busqueda = this.value.toLowerCase();
+                        document.querySelectorAll(".tarjetas").forEach(el => {
+                            let pais = el.getAttribute("id").toLowerCase();
+                            if (!pais.includes(busqueda)) {
+                                el.style.display = "none";
+                            } else {
+                                el.style.display = "block";
+                            }
+                        })
+                    })
+
+                    // ======> Limpiar filtro
+                    document.getElementById("limpiar-filtro-ico").addEventListener("click", function () {
+                        document.getElementById("filtro-pais").value = "";
+                        document.querySelectorAll(".tarjetas").forEach(el => {
+                            el.style.display = "block";
+                        })
+                    })
+
                 }).catch(err => alert("Error en API fetch\n" + err))
 
             // Salir de la aplicacion

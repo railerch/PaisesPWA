@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    margin: 2em 0 0 0;
+    margin: 1em 0 0 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -11,6 +11,29 @@ body {
     width: 90vw;
     box-sizing: border-box;
     margin: 0 auto;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+header div {
+    width: 50%;
+    min-width: 300px;
+}
+
+header div:last-child {
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    font-size: 1.5em;
+    color: darkcyan;
+}
+
+header div:last-child input {
+    width: 50%;
 }
 
 main {
@@ -35,11 +58,19 @@ a {
     color: gray;
 }
 
+#limpiar-filtro-ico {
+    cursor: pointer;
+}
+
+#limpiar-filtro-ico:hover {
+    color: red;
+}
+
 #contenido {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
 
 }
 
@@ -137,6 +168,14 @@ input {
 @media (max-width: 720px) {
     #login-frm {
         width: 90%;
+    }
+
+    header div {
+        width: 100%;
+    }
+
+    header div:last-child {
+        justify-content: start;
     }
 
     #contenido {

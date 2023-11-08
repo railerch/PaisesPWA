@@ -16,14 +16,21 @@
 <body>
     <div id="my-container">
         <main>
-            <header>
-                <h1 class="text-muted">Responsive Web App</h1>
-                <h3 id="pantalla-lbl" class="text-muted"></h3>
-                <p>
-                    <small id="install-lnk" style="display:none"><i class="icon-download"></i>Instalar aplicación |
-                    </small>
-                    <small id="salir-btn"><i class="icon-logout"></i>Salir de la App</small>
-                </p>
+            <header style="display:flex">
+                <div>
+                    <h1 class="text-muted">Responsive PWA</h1>
+                    <h3 id="pantalla-lbl" class="text-muted"></h3>
+                    <p>
+                        <small id="install-lnk" style="display:none"><i class="icon-download"></i>Instalar aplicación |
+                        </small>
+                        <small id="salir-btn"><i class="icon-logout"></i>Salir de la App</small>
+                    </p>
+                </div>
+                <div>
+                    <i class="icon-filter"></i>
+                    <input type="text" name="filtrar" id="filtro-pais" placeholder="Buscar pais">
+                    <i id="limpiar-filtro-ico" class="icon-trash"></i>
+                </div>
             </header>
             <hr>
             <h2 class="text-muted" style="text-align: center;">REST countries API</h2>
