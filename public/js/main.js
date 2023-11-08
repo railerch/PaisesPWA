@@ -1,8 +1,6 @@
 import * as fn from "./main-fn.js";
 
 window.onload = () => {
-    console.log("JS active...");
-
     // BOTON DE INSTALACION PARA LA PWA
 
     // Variable global que tendra la captura del evento 'beforeinstallprompt'
@@ -40,7 +38,6 @@ window.onload = () => {
     if (window.location.pathname.includes("responsive-layout")) {
         // Permitir ingreso si la sesion esta activa
         if (sessionStorage.getItem("sesion")) {
-            console.log("Section: Responsive Layout");
             // Reconocer el tamaño de la pantalla
             let anchoDisplay;
             let winWidth = window.innerWidth;
@@ -168,20 +165,48 @@ window.onload = () => {
 
                     // FILTRO DE BUSQUEDA
                     document.getElementById("buscar-ico").addEventListener("click", function () {
+                        let contenido = document.getElementById("contenido");
+                        if (contenido.querySelector("#err-404")) {
+                            contenido.querySelector("#err-404").remove();
+                        }
+
                         let busqueda = document.getElementById("filtro").value.toLowerCase();
-                        document.querySelectorAll(".tarjetas").forEach(el => {
+                        let encontrado = false;
+
+                        contenido.querySelectorAll(".tarjetas").forEach(el => {
                             let pais = el.getAttribute("id").toLowerCase();
                             if (!pais.includes(busqueda)) {
                                 el.style.display = "none";
                             } else {
                                 el.style.display = "block";
+                                encontrado = true;
                             }
                         })
+
+                        // Mostrar mensaje en caso de no haber coincidencias
+                        if (!encontrado) {
+                            // Evitar duplicar mensaje anterior
+                            if (contenido.querySelector("#err-404")) {
+                                contenido.querySelector("#err-404").remove();
+                            }
+
+                            // Mostrar mensaje 
+                            let h3 = document.createElement("h3");
+                            h3.setAttribute("id", "err-404");
+                            h3.style.color = "orange";
+                            h3.innerText = "Sin coincidencias...";
+                            contenido.prepend(h3);
+                        }
                     })
 
                     // ======> Limpiar filtro
                     document.getElementById("limpiar-filtro-ico").addEventListener("click", function () {
                         document.getElementById("filtro").value = "";
+
+                        if (contenido.querySelector("#err-404")) {
+                            contenido.querySelector("#err-404").remove();
+                        }
+
                         document.querySelectorAll(".tarjetas").forEach(el => {
                             el.style.display = "block";
                         })
@@ -191,7 +216,6 @@ window.onload = () => {
 
             // Boton Scroll Top
             window.scrollTo();
-            console.log(window.scrollY);
             let goTopBtn = document.getElementById("go-top");
 
             // =====> Posicion por defecto
