@@ -118,10 +118,10 @@ input {
 
 .aviso-ok {
     padding: 5px;
-    background-color: green;
-    color: #fff;
+    background-color: lightgreen;
+    color: #333;
     border-radius: 5px;
-    border: 1px solid lightgreen;
+    border: 0px;
 }
 
 #respuesta-div {
