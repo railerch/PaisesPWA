@@ -85,7 +85,7 @@ window.onload = () => {
                         div.style.border = "1px solid gray";
                         div.style.borderRadius = "5px";
                         div.style.boxShadow = "1px 1px 3px gray";
-                        div.style.backgroundColor = "beige";
+                        div.style.backgroundColor = "lightgray";
                         div.style.color = "#333";
                         contenido.appendChild(div);
 
@@ -167,8 +167,8 @@ window.onload = () => {
                     })
 
                     // FILTRO DE BUSQUEDA
-                    document.getElementById("filtro-pais").addEventListener("keyup", function () {
-                        let busqueda = this.value.toLowerCase();
+                    document.getElementById("buscar-ico").addEventListener("click", function () {
+                        let busqueda = document.getElementById("filtro").value.toLowerCase();
                         document.querySelectorAll(".tarjetas").forEach(el => {
                             let pais = el.getAttribute("id").toLowerCase();
                             if (!pais.includes(busqueda)) {
@@ -181,7 +181,7 @@ window.onload = () => {
 
                     // ======> Limpiar filtro
                     document.getElementById("limpiar-filtro-ico").addEventListener("click", function () {
-                        document.getElementById("filtro-pais").value = "";
+                        document.getElementById("filtro").value = "";
                         document.querySelectorAll(".tarjetas").forEach(el => {
                             el.style.display = "block";
                         })
