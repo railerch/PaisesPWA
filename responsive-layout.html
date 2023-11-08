@@ -11,35 +11,45 @@
     <link rel="shortcut icon" href="public/img/icon.png" type="image/x-icon">
     <script type="module" src="public/js/main.js" defer></script>
 
-    <title>Responsive Layout | Demo PWA</title>
+    <title>Responsive PWA | Demo App</title>
+</head>
 
 <body>
     <div id="my-container">
         <main>
             <header style="display:flex">
                 <div>
-                    <h1 class="text-muted">Responsive PWA</h1>
-                    <h3 id="pantalla-lbl" class="text-muted"></h3>
-                    <p>
-                        <small id="install-lnk" style="display:none"><i class="icon-download"></i>Instalar aplicación |
+                    <h1 class="text-muted" style="margin-bottom:5px">Paises PWA</h1>
+                    <h4 id="pantalla-lbl" class="text-muted" style="margin: 5px 0;"></h4>
+                    <p style="margin:1em 5px 0 0">
+                        <small id="install-txt" style="display:none"><i class="icon-download"></i>Instalar aplicación |
                         </small>
-                        <small id="salir-btn"><i class="icon-logout"></i>Salir de la App</small>
+                        <small id="salir-txt"><i class="icon-logout"></i>Salir de la App</small>
                     </p>
                 </div>
-                <div>
-                    <i class="icon-filter"></i>
+                <div style="margin-top:0.5em;">
                     <input type="text" name="filtrar" id="filtro-pais" placeholder="Buscar pais">
                     <i id="limpiar-filtro-ico" class="icon-trash"></i>
                 </div>
             </header>
             <hr>
-            <h2 class="text-muted" style="text-align: center;">REST countries API</h2>
+            <div style="margin:2em 0 1em 0;text-align: center;">
+                <h2 class="text-muted" style="margin: 5px 0;">REST countries API</h2>
+                <small style="color: #999">
+                    Fuente: https://restcountries.com/
+                    <br>
+                    Paises indexados: <span id="conteo-paises" style="color:darkcyan">0</span>
+                </small>
+            </div>
             <div id="contenido">
                 <!-- Contenido -->
-                <div style="width:100%;margin-top:20vh;text-align: center;">
+                <div style="width:100%;margin:20vh 0;text-align: center;">
                     <img src="public/img/preloader.gif" alt="Preloader img">
                 </div>
             </div>
+            <!-- BOTON PARA SUBIR AL INICIO -->
+            <i id="go-top" class="icon-up-big"></i>
+
         </main>
         <footer>
             Desarrollador: Railer Ch., todos los derechos reservados, Caracas - Venezuela 2023

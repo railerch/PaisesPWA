@@ -11,7 +11,7 @@ window.onload = () => {
     /* Boton de instalacion, con un 'display=none' para solo mostrarlo cuando
     el evento 'beforeinstallpromt' sea activado, esto limitara la visualizacion
     del boton solo en aquellos navegadores compatibles con la instalacion de PWA */
-    let installLnk = document.getElementById("install-lnk");
+    let installLnk = document.getElementById("install-txt");
 
     // Captura del evento ya mencionado
     window.addEventListener("beforeinstallprompt", function (evt) {
@@ -38,6 +38,7 @@ window.onload = () => {
 
     // INTERFACE
     if (window.location.pathname.includes("responsive-layout")) {
+        // Permitir ingreso si la sesion esta activa
         if (sessionStorage.getItem("sesion")) {
             console.log("Section: Responsive Layout");
             // Reconocer el tamaño de la pantalla
@@ -65,10 +66,12 @@ window.onload = () => {
 
             // Generar contenido
             let contenido = document.getElementById("contenido");
+            let conteoPaises = document.getElementById("conteo-paises");
             fetch("https://restcountries.com/v3.1/all")
                 .then(res => res.json())
                 .then(res => {
                     contenido.innerHTML = "";
+                    conteoPaises.innerText = res.length;
                     res.forEach(pais => {
                         // TARJETA
                         let div = document.createElement("div");
@@ -186,12 +189,53 @@ window.onload = () => {
 
                 }).catch(err => alert("Error en API fetch\n" + err))
 
+            // Boton Scroll Top
+            window.scrollTo();
+            console.log(window.scrollY);
+            let goTopBtn = document.getElementById("go-top");
+
+            // =====> Posicion por defecto
+            goTopBtn.style.top = window.scrollY + (window.innerHeight * 90 / 100);
+
+            // =====> Hacer scroll con el documento
+            window.addEventListener("scroll", function () {
+                let btnPos = window.scrollY + (window.innerHeight * 90 / 100);
+                goTopBtn.style.top = `${btnPos}px`
+            })
+
+            // =====> Hacer scroll hasta el inicio
+            goTopBtn.addEventListener("click", function () {
+                // Posicion actual del tope de la ventana
+                let top = window.scrollY;
+
+                // Razon de aceleracion del scroll
+                let R = 1;
+
+                // Animacion del scroll
+                let scrollTimer = setInterval(() => {
+                    top = top - (100 * R);
+                    window.scrollTo({
+                        top: top
+                    });
+
+                    // Si el tope de la ventana es menor a cero se cancela el timer
+                    if (top < 0) {
+                        clearInterval(scrollTimer);
+                    }
+
+                    // Aumentar la razon de aceleracion
+                    R++;
+
+                }, 10)
+            })
+
             // Salir de la aplicacion
-            document.getElementById("salir-btn").addEventListener("click", function () {
+            document.getElementById("salir-txt").addEventListener("click", function () {
                 console.log("Cerrar sesion...")
                 window.location.replace("index.html");
             })
         } else {
+            // Retornar al login
             window.location.replace("/")
         }
     } else {

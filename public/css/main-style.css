@@ -1,3 +1,4 @@
+/* GLOBAL */
 html {
     height: 100vh;
 }
@@ -13,6 +14,16 @@ body {
     margin: 0 auto;
 }
 
+a {
+    text-decoration: none;
+    color: darkcyan;
+}
+
+.text-muted {
+    color: gray;
+}
+
+/* PANTALLA DE PAISES */
 header {
     display: flex;
     flex-wrap: wrap;
@@ -38,28 +49,6 @@ header div:last-child input {
 
 main {
     width: 100%;
-    min-height: 980vh;
-}
-
-footer {
-    padding: 10px;
-    margin-top: 1em;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-}
-
-a {
-    text-decoration: none;
-    color: darkcyan;
-}
-
-.text-muted {
-    color: gray;
-}
-
-#limpiar-filtro-ico {
-    cursor: pointer;
 }
 
 #limpiar-filtro-ico:hover {
@@ -74,6 +63,20 @@ a {
 
 }
 
+footer {
+    padding: 10px;
+    margin-top: 1em;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+#go-top:hover {
+    background-color: darkcyan;
+    color: #fff;
+}
+
+/* LOGIN */
 #login-frm {
     width: 15%;
     min-width: 200px;
@@ -95,18 +98,23 @@ a {
     color: darkcyan;
 }
 
-#install-lnk,
-#salir-btn {
-    text-decoration: none;
-    color: darkcyan;
-    cursor: pointer;
-}
-
 input {
     width: 90%;
     padding: 5px;
     border: 1px solid gray;
     border-radius: 5px;
+}
+
+/* BOTONES */
+#install-txt,
+#salir-txt {
+    text-decoration: none;
+    color: darkcyan;
+    cursor: pointer;
+}
+
+#limpiar-filtro-ico {
+    cursor: pointer;
 }
 
 .my-buttons {
@@ -139,6 +147,19 @@ input {
     box-shadow: 1px 1px 2px lightgray;
 }
 
+#go-top {
+    position: absolute;
+    top: 90%;
+    left: 95%;
+    padding: 10px;
+    border: 1px solid darkcyan;
+    border-radius: 10px;
+    background-color: #fff;
+    color: darkcyan;
+    cursor: pointer;
+}
+
+/* AVISOS */
 .aviso-error {
     padding: 5px;
     background-color: crimson;
@@ -155,16 +176,7 @@ input {
     border: 0px;
 }
 
-#respuesta-div {
-    width: 100%;
-    height: 250px;
-    padding: 15px;
-    border: 1px solid gray;
-    border-radius: 5px;
-    background-color: #000;
-    color: #fff;
-}
-
+/* MEDIA QUERIES */
 @media (max-width: 720px) {
     #login-frm {
         width: 90%;
@@ -184,6 +196,10 @@ input {
 
     .tarjetas {
         width: 90% !important;
+    }
+
+    #go-top {
+        left: 85%;
     }
 
 }
