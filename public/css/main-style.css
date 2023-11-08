@@ -51,10 +51,6 @@ main {
     width: 100%;
 }
 
-#limpiar-filtro-ico:hover {
-    color: red;
-}
-
 #contenido {
     width: 100%;
     display: flex;
@@ -69,11 +65,6 @@ footer {
     background-color: #333;
     color: #fff;
     text-align: center;
-}
-
-#go-top:hover {
-    background-color: darkcyan;
-    color: #fff;
 }
 
 /* LOGIN */
@@ -117,6 +108,10 @@ input {
     cursor: pointer;
 }
 
+#limpiar-filtro-ico:active {
+    color: red;
+}
+
 .my-buttons {
     padding: 10px;
     border: 0;
@@ -132,13 +127,6 @@ input {
 .my-buttons.lg {
     padding: 20px;
     width: 150px;
-}
-
-.my-buttons:hover {
-    background-color: lightblue;
-    color: gray;
-    box-shadow: 2px 2px 3px gray;
-    cursor: pointer;
 }
 
 .my-buttons:active {
@@ -157,6 +145,11 @@ input {
     background-color: #fff;
     color: darkcyan;
     cursor: pointer;
+}
+
+#go-top:active {
+    background-color: darkcyan;
+    color: #fff;
 }
 
 /* AVISOS */
