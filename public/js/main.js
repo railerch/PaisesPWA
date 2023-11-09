@@ -263,6 +263,12 @@ window.onload = () => {
             window.location.replace("/")
         }
     } else {
+        // =====> Buscar al presionar la tecla de busqueda en android
+        document.addEventListener("keyup", function (evt) {
+            let key = evt.key;
+            document.getElementById("key").innerText = key
+        })
+
         // LOGIN
         sessionStorage.removeItem("sesion");
         document.cookie = "";
