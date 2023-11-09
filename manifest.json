@@ -1,13 +1,13 @@
 {
     "name": "Países del mundo | PWA demo",
-    "short_name": "MyDemoPWA",
-    "description": "Simple aplicación para pruebas de PWA",
+    "short_name": "Países",
+    "description": "Aplicación que muestra la bandera e informacion basica de los paises del mundo (PWA demo + API fetch)",
     "start_url": "/",
     "display": "standalone",
     "lang": "es (Spanish)",
     "dir": "ltr",
     "background_color": "#fdfdfd",
-    "theme_color": "#1ebddd",
+    "theme_color": "#008b8b",
     "orientation": "portrait-primary",
     "icons": [
         {

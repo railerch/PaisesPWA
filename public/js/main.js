@@ -163,12 +163,6 @@ window.onload = () => {
                         div.appendChild(ul);
                     })
 
-                    // =====> Buscar al presionar la tecla de busqueda en android
-                    document.addEventListener("keyup", function (evt) {
-                        let key = evt.key;
-                        document.getElementById("key").innerText = key
-                    })
-
                     // FILTRO DE BUSQUEDA
                     document.getElementById("buscar-ico").addEventListener("click", function () {
                         let contenido = document.getElementById("contenido");
