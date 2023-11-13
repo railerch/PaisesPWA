@@ -4,12 +4,17 @@ html {
 }
 
 body {
-    margin: 1em 0 0 0;
+    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 #my-container {
     width: 90vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: ;
     box-sizing: border-box;
     margin: 0 auto;
 }
@@ -49,6 +54,7 @@ header div:last-child input {
 
 main {
     width: 100%;
+    padding: 1em 0;
 }
 
 #contenido {
@@ -61,7 +67,6 @@ main {
 
 footer {
     padding: 10px;
-    margin-top: 1em;
     background-color: #333;
     color: #fff;
     text-align: center;

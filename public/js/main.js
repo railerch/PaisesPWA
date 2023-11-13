@@ -203,7 +203,7 @@ if (window.location.pathname.includes("responsive-layout")) {
                         let h3 = document.createElement("h3");
                         h3.setAttribute("id", "err-404");
                         h3.style.color = "orange";
-                        h3.innerText = "Sin coincidencias...";
+                        h3.innerHTML = "<i class='icon-frown'></i>Sin coincidencias...";
                         contenido.prepend(h3);
                     }
                 })
