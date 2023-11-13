@@ -4,6 +4,10 @@
     "description": "Aplicación que muestra la bandera e informacion basica de los paises del mundo (PWA demo + API fetch)",
     "start_url": "/",
     "display": "standalone",
+    "display_override": [
+        "fullscreen",
+        "minimal-ui"
+    ],
     "lang": "es (Spanish)",
     "dir": "ltr",
     "background_color": "#fdfdfd",

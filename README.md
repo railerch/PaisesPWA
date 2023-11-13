@@ -81,15 +81,13 @@ En **index.html** _(etiqueta head)_
 <link rel="manifest" href="manifest.json" />
 ```
 ## Service Worker
-Ten en cuenta que las PWA se ejecutan solo en https porque el service workers puede acceder a la solicitud y manejarla. Por lo tanto, se requiere seguridad.
+Un service worker es un script que el navegador ejecuta en segundo plano en un hilo separado. Eso significa que se ejecuta en un lugar diferente y está completamente separado del sitio web. Esa es la razón por la que no puede manipular elementos en el DOM.
 
-Un service worker es un script que tu navegador ejecuta en segundo plano en un hilo separado. Eso significa que se ejecuta en un lugar diferente y está completamente separado de tu página web. Esa es la razón por la que no puede manipular elementos en el DOM.
+Las PWA se ejecutan solo en https ya que el service worker puede interceptar y manejar solicitudes de red, administrar el caché para habilitar el soporte fuera de línea o enviar notificaciones push a los usuarios, por lo tanto, se requiere seguridad.
 
-Sin embargo, es superpoderoso. El service worker puede interceptar y manejar solicitudes de red, administrar el caché para habilitar el soporte fuera de línea o enviar notificaciones push a tus usuarios.
+El serviceWorker se crea en la carpeta raiz del proyecto para no limitar su alcance y el nombre que se le da al archivo es indiferente (serviceWorker.js, sw.js)
 
-Entonces, creemos nuestro primer service worker en la carpeta raíz nombrándolo serviceWorker.js (el nombre depende de ti). Pero tienes que ponerlo en la raíz para no limitar su alcance a una sola carpeta.
-
->IMPORTANTE: El serviceWorker se crea en la carpeta raiz del proyecto.
+El serviceWorker se activa desde el archivo pricipal de JS del proyecto (main.js, app.js, etc.)
 
 En **serviceWorker.js**
 
@@ -111,6 +109,7 @@ const assets = [
   "/images/coffee9.jpg",
 ]
 
+// INSTALACION DE ARCHIVOS REQUERIDOS (App Shell)
 self.addEventListener("install", installEvent => {
   installEvent.waitUntil(
     caches.open(staticDevCoffee).then(cache => {
@@ -126,35 +125,53 @@ self.addEventListener("fetch", fetchEvent => {
     })
   )
 })
+
+// MANEJAR PETICIONES FETCH
+self.addEventListener("fetch", evt => {
+
+    console.log(evt); // El evento (Object)
+    console.log(evt.request); // El request del evento
+    
+    if (fetchEvt.request.url.includes(".png")) {
+        // Manipular la respuesta del service worker interceptando el fetch saliente
+        // let req = fetch("public/img/icon.png") // Fetch personalizado 
+        // let req = fetch(fetchEvt.request.url) // Url de la peticion inicial
+        // let req = fetch(fetchEvt.request) // Responder con el fetch inicial
+
+        // Enviar el resultado
+        fetchEvt.respondWith(req);
+    } else {
+        console.log("ANOTHER FILE: " + true);
+    }
+
+    // Manipular aun mas las respuestas con la clase Response
+    if (fetchEvt.request.url.includes("main-style.css")) {
+        let res = new Response(`
+        body {
+            background-color: red;
+            color: #fff
+        }
+        `, {
+            headers: {
+                "content-type": "text/css"
+            }
+        });
+
+        fetchEvt.respondWith(res);
+    }
+
+    if (fetchEvt.request.url.includes("main-fn.js")) {
+        let res = new Response("alert('Hola mundo desde el service worker')", {
+            headers: {
+                "content-type": "text/javascript"
+            }
+        })
+
+        fetchEvt.respondWith(res);
+    }
+})
 ```
 
-Declaramos el nombre de nuestro caché **staticDevCoffee** y los recursos (assets) para almacenar en el mismo. Para realizar esta acción, necesitamos adjuntar un event listener a **self**.
-
-**self** es el propio service worker. Nos permite escuchar los eventos del ciclo de vida y hacer algo a cambio.
-
-El service worker tiene varios ciclos de vida y uno de ellos es el evento **install**. Se ejecuta cuando se instala el service worker. Se activa tan pronto se ejecuta y solo es llamado una vez por cada service worker.
-
-Cuando se dispara el evento **install**, ejecutamos el callback que nos da acceso al objecto **event**.
-
-Almacenar cosas en la caché del navegador puede tardar un tiempo en finalizar porque es asíncrono.
-
-Entonces, para manejarlo necesitamos usar el método **waitUntil()**, el cual espera a que termine la acción.
-
-Una vez que la API de caché este lista, podemos ejecutar el método **open()** y crear nuestra caché pasando su nombre como argumento a **caches.open(staticDevCoffee)**.
-
-Luego esta devuelve una promesa, que nos ayuda a almacenar nuestros recursos en la caché con **cache.addAll(assets)**.
-
-En el evento **fetch** para recuperar nuestros datos. El callback nos da acceso a **fetchEvent**. Luego le adjuntamos **respondWith()** para evitar la respuesta predeterminada del navegador. En su lugar devuelve una promesa, ya que la acción de recuperación puede tardar un tiempo en completarse.
-
-Y una vez listo el caché, aplicamos el método **caches.match(fetchEvent.request)**. Este verificará si algo en el caché coincide con **fetchEvent.request**. Por cierto, fetchEvent.request es solo nuestro arreglo de recursos.
-
-Luego, este devuelve una promesa. Y finalmente, podemos devolver el resultado si existe o el fetch inicial si no.
-
-Ahora, nuestros recursos pueden ser almacenados en caché y recuperados por el service worker, lo que aumenta bastante el tiempo de carga de nuestras imágenes.
-
-Y lo más importante, hace que nuestra aplicación esté disponible en modo fuera de línea.
-
-Pero un service worker por si solo no puede hacer el trabajo. Necesitamos registrarlo en nuestro proyecto.
 
 ## Registrando el Service Worker
 
@@ -163,19 +180,58 @@ En **js/app.js**
 ```
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
-    navigator.serviceWorker
-      .register("/serviceWorker.js")
-      .then(res => console.log("service worker registered"))
-      .catch(err => console.log("service worker not registered", err))
+    navigator.serviceWorker.register("/serviceWorker.js")
+      .then(res => console.log("serviceWorker registrado."))
+      .catch(err => console.log("ERROR al registrar el serviceWorker", err))
   })
 }
+
+// VALIDAR EL SOPORTE DE CHACHE DEL NAVEGADOR   
+    // Nota: si soporta serviceWorker, tambien soporta chache 
+    if ("caches" in window) {
+        console.log("Tecnologia de cache soportada.");
+
+        // Abrir un contenedor en cache, si no existe lo crea
+        caches.open("prueba-1").then(console.log("Contenedor Prieba-1 inicializado"))
+
+        // Comprobar que exista el contenedor indicado
+        // Al usar console log sin parentesis como sentencia en la respuesta de una promesa 
+        // este mostrara el resultado de la misma
+        caches.has("prueba-1")
+            .then(console.log) // true
+
+        // Borrar un contenedor en cache
+        caches.open("prueba-2").then(console.log("Contenedor Prieba-2 inicializado"))
+        caches.delete("prueba-2")
+            .then(console.log("Contenedor Prueba-2 eliminado"))
+
+        // Crear un espacio en cache para almacenar los archivos
+        caches.open("cache-v1.0").then(cache => {
+            // Agregar solo un recurso
+            cache.add("/index.html");
+
+            // Agregar multiples recursos
+            cache.addAll(["/public/css/main-style.css", "/public/css/fontello.css", "/public/js/main.js", "/public/js/main-fn.js"])
+                .then(() => {
+                    // Eliminar un archivo de la cache
+                    cache.delete("/public/js/main-fn.js")
+                });
+
+            // Mostrar un archivo de cache por consola
+            cache.match("/index.html").then(res =>
+                res.text()
+            ).then(console.log)
+
+            // Modificar un rchivo de la cache
+            cache.put("/public/css/main-style.css", new Response("Hola mundo"))
+                .then(console.log("Archivo modificado..."))
+
+        })
+
+        // Mostrar los contenedores registrados
+        caches.keys().then(keys => console.log(keys))
+    }
 ```
-
-Aquí, comenzamos verificando si **serviceWorker** es compatible con el navegador actual (ya que todavía no es compatible con todos los navegadores).
-
-Luego, escuchamos el evento de carga de la página para registrar nuestro service worker pasando el nombre de nuestro archivo **serviceWorker.js** a **navigator.serviceWorker.register()** como parámetro para registrar nuestro worker.
-
-Con esta actualización, ahora hemos transformado nuestra aplicación web habitual en una PWA.
 
 Service Worker - https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 Manifest.json - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json

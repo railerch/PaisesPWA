@@ -1,32 +1,54 @@
-const myPwa = "my-pwa";
-const assets = [
-    "/",
-    "/index.html",
-    "/css/style.css",
-    "/js/app.js",
-    "/images/coffee1.jpg",
-    "/images/coffee2.jpg",
-    "/images/coffee3.jpg",
-    "/images/coffee4.jpg",
-    "/images/coffee5.jpg",
-    "/images/coffee6.jpg",
-    "/images/coffee7.jpg",
-    "/images/coffee8.jpg",
-    "/images/coffee9.jpg"
-];
+const CACHE_STATICO = "cache-static-v1";
+const CACHE_DINAMICO = "cache-dinamico-v1";
 
-self.addEventListener("install", installEvent => {
-    installEvent.waitUntil(
-        caches.open(myPwa).then(cache => {
-            cache.addAll(assets);
+// ALMACENAR EL 'APP SHELL' EN CACHE AL INSTALAR
+// Nota: El App Shell es todo lo necesario para que la app funcione
+self.addEventListener("install", evt => {
+
+    let cacheStatico = caches.open(CACHE_STATICO)
+        .then(cache => {
+            return cache.addAll([
+                "/index.html",
+                "/responsive-layout.html",
+                "/public/css/main-style.css",
+                "/public/css/fontello.css",
+                "/public/font/fontello.woff2?35656611",
+                "/public/js/main.js",
+                "/public/js/main-fn.js",
+                "/public/img/icon.png",
+                "/public/img/icon.ico",
+                "/public/img/preloader.gif"
+            ])
         })
-    );
+
+    // Ejecutar la instalacion una vez el trabajo con la cache este listo
+    evt.waitUntil(cacheStatico);
 });
 
-self.addEventListener("fetch", fetchEvent => {
-    fetchEvent.respondWith(
-        caches.match(fetchEvent.request).then(res => {
-            return res || fetch(fetchEvent.request);
+// MANEJAR PETICIONES FETCH
+self.addEventListener("fetch", evt => {
+    // console.log(evt);
+    // console.log(evt.request);
+
+    // cache dinamica (Network Fallback)
+    let cacheDinamico = caches.match(evt.request)
+        .then(res => {
+            // Si existe el archivo en cache se retorna
+            if (res) return res;
+
+            // No existe el archivo y hay que recuperarlo desde la web
+            console.log("Erro 404: " + evt.request.url);
+
+            // Se solicita nuevamente y se reemplaza la solicitud en cache con la nueva peticion 
+            return fetch(evt.request).then(newRes => {
+                caches.open(CACHE_DINAMICO).then(cache => {
+                    cache.put(evt.request, newRes);
+                })
+
+                return newRes.clone();
+            })
+
         })
-    );
-});
+
+    evt.waitUntil(cacheDinamico);
+})
